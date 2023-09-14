@@ -29,17 +29,15 @@ class MyApp extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Container(
-                    constraints:
-                        const BoxConstraints.expand(width: 130, height: 50),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white54,
-                    ),
-                    child: const CounterWidget()),
-              ),
+              Container(
+                  margin: const EdgeInsets.all(5),
+                  constraints:
+                      const BoxConstraints.expand(width: 130, height: 50),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white54,
+                  ),
+                  child: const CounterWidget()),
               const Text(
                 'Tap "-" to increment',
                 style: TextStyle(
