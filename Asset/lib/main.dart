@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:asset/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/input_decorator.dart';
@@ -25,6 +27,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -51,7 +54,7 @@ class BodyWF extends StatelessWidget {
         children: [
           Search(),
           CityDetails(),
-          TemperatureDeatil(),
+          TemperatureDetail(),
           ExtraWeatherDetail(),
           BottomDetail(),
         ],
@@ -105,8 +108,8 @@ class CityDetails extends StatelessWidget {
   }
 }
 
-class TemperatureDeatil extends StatelessWidget {
-  const TemperatureDeatil({super.key});
+class TemperatureDetail extends StatelessWidget {
+  const TemperatureDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +148,7 @@ class ExtraWeatherDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         WeatherDetailItem(
@@ -166,10 +169,10 @@ class ExtraWeatherDetail extends StatelessWidget {
 }
 
 class WeatherDetailItem extends StatelessWidget {
-  String text1;
-  String text2;
+  final String text1;
+  final String text2;
 
-  WeatherDetailItem({super.key, required this.text1, required this.text2});
+  const WeatherDetailItem({super.key, required this.text1, required this.text2});
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +196,78 @@ class WeatherDetailItem extends StatelessWidget {
   }
 }
 
+// class BottomDetail extends StatelessWidget {
+//   const BottomDetail({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView(
+//       scrollDirection: Axis.horizontal,
+//       itemExtent: 170,
+//       children: const [
+//         BottomDetailItem(
+//           day: 'Monday',
+//           degree: '6',
+//         ),
+//         BottomDetailItem(
+//           day: 'Tuesday',
+//           degree: '6',
+//         ),
+//         BottomDetailItem(
+//           day: 'Wednesday',
+//           degree: '6',
+//         ),
+//         BottomDetailItem(
+//           day: 'Thursday',
+//           degree: '6',
+//         ),
+//         BottomDetailItem(
+//           day: 'Friday',
+//           degree: '6',
+//         ),
+//         BottomDetailItem(
+//           day: 'Saturday',
+//           degree: '6',
+//         ),
+//         BottomDetailItem(
+//           day: 'Sunday',
+//           degree: '6',
+//         ),
+//       ],
+//     );
+//   }
+// }
+//
+// class BottomDetailItem extends StatelessWidget {
+//   final String day;
+//   final String degree;
+//
+//   const BottomDetailItem({super.key, required this.day, required this.degree});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       title: Text(
+//         day,
+//         style: const TextStyle(fontSize: 20),
+//       ),
+//       subtitle: Row(
+//         children: [
+//           Text(
+//             '$degree °F',
+//             style: const TextStyle(fontSize: 20),
+//           ),
+//           Icon(
+//             Icons.sunny,
+//             color: Theme.of(context).primaryColor,
+//           ),
+//         ],
+//       ),
+//       textColor: Theme.of(context).primaryColor,
+//     );
+//   }
+// }
+
 class BottomDetail extends StatelessWidget {
   const BottomDetail({super.key});
 
@@ -208,16 +283,50 @@ class BottomDetail extends StatelessWidget {
       "Sunday"
     ];
 
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(days[index], style: TextStyle(fontSize: 22))
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) =>
-            const SizedBox(width: 10),
-        itemCount: days.length);
+    return SizedBox(
+      height: 80,
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (BuildContext context, int index) {
+            return BottomDetailItem(day: days[index], degree: '6');
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              const SizedBox(width: 10),
+          itemCount: days.length),
+    );
+  }
+}
+
+class BottomDetailItem extends StatelessWidget {
+   final String day;
+   final String degree;
+  const BottomDetailItem({super.key, required this.day, required this.degree});
+
+  @override
+  Widget build(BuildContext context) {
+    var rng = Random();
+
+    return SizedBox(
+      width: 150,
+      child: ListTile(
+        title: Text(
+          day,
+          style: const TextStyle(fontSize: 20),
+        ),
+        subtitle: Row(
+          children: [
+            Text(
+              '${rng.nextInt(10)+10} °F',
+              style: const TextStyle(fontSize: 20),
+            ),
+            Icon(
+              Icons.sunny,
+              color: Theme.of(context).primaryColor,
+            ),
+          ],
+        ),
+        textColor: Theme.of(context).primaryColor,
+      ),
+    );
   }
 }
