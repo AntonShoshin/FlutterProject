@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: const FirstHome(),
-    routes: {
-      FirstHome.routeName: (context) => FirstHome(),
-      SecondHome.routeName: (context) => SecondHome(),
-    },
-  ));
+  runApp(
+    MaterialApp(
+      home: const FirstHome(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(builder: (context) => const FirstHome());
+          case SecondHome.routeName:
+            User user = settings.arguments as User;
+            return MaterialPageRoute(
+                builder: (context) => SecondHome(user: user));
+        }
+      },
+    ),
+  );
 }
 
 class FirstHome extends StatelessWidget {
   const FirstHome({super.key});
+
   static const routeName = '/first';
 
   @override
@@ -26,7 +35,8 @@ class FirstHome extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, SecondHome.routeName, arguments: User('Anton', 34));
+            Navigator.pushNamed(context, SecondHome.routeName,
+                arguments: User('Anton', 35));
           },
           child: const Text('Second Home'),
         ),
@@ -36,15 +46,13 @@ class FirstHome extends StatelessWidget {
 }
 
 class SecondHome extends StatelessWidget {
-  late User user;
+  final User user;
   static const routeName = '/second';
 
-  SecondHome({super.key});
+  const SecondHome({super.key, required this.user});
+
   @override
   Widget build(BuildContext context) {
-    RouteSettings settings = ModalRoute.of(context)!.settings;
-    user = settings.arguments as User;
-
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
@@ -64,7 +72,7 @@ class SecondHome extends StatelessWidget {
   }
 }
 
-class User{
+class User {
   final String name;
   final int age;
 
