@@ -1,3 +1,4 @@
+import 'package:asset/pages/register_home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,17 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.blueAccent,
-        appBar: AppBar(
-          backgroundColor: Colors.indigo,
-          title: const Text(''),
-          centerTitle: true,
-        ),
-        body: Center(
-          child: null,
-        ),
+      title: 'Register Form Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: const RegisterFormPage(),
     );
   }
 }
