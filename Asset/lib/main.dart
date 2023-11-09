@@ -1,5 +1,7 @@
+import 'package:asset/offices.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 
 void main() {
   runApp(const MyApp());
@@ -27,11 +29,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late Future<OfficesList> officesList;
 
   @override
   void initState() {
     super.initState();
-    loadData();
+    officesList = getOfficesList();
+    // loadData();
   }
 
   @override
@@ -42,18 +46,39 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Networking'),
         centerTitle: true,
       ),
-      body: Center(
-        child: null,
+      body: FutureBuilder<OfficesList>(
+        future: officesList,
+        builder: (BuildContext context, AsyncSnapshot<OfficesList> snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data?.offices.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text('${snapshot.data?.offices[index].name}'),
+                      subtitle:
+                          Text('${snapshot.data?.offices[index].address}'),
+                      leading: Image.network(
+                          '${snapshot.data?.offices[index].image}'),
+                      isThreeLine: true,
+                    ),
+                  );
+                });
+          } else if (snapshot.hasError) {
+            return const Text('Error');
+          }
+          return Container(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
 }
 
 Future<http.Response> getData() async {
-
   Uri url = Uri.https('about.google', 'static/data/locations.json');
   return await http.get(url);
-
 }
 
 void loadData() {
